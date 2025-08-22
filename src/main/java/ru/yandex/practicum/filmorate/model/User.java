@@ -8,12 +8,12 @@ import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Film extends NewFilm {
+public class User extends NewUser {
     @Min(value = 1, message = "Id должен быть положительным числом")
     private long id;
 
-    public Film(long id, String name, String description, LocalDate releaseDate, int duration) {
-        super(name, description, releaseDate, duration);
+    public User(long id, String email, String login, String name, LocalDate birthday) {
+        super(email, login, name, birthday);
         this.id = id;
     }
 }
