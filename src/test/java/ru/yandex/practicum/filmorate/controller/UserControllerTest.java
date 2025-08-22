@@ -80,20 +80,20 @@ public class UserControllerTest {
     }
 
     @Test
-    public void isNotValidateForBirthday2408() {
+    public void isNotValidateForBirthdayTomorrow() {
         User user = new User(
                 1,
                 "null@ya.ru",
                 "login",
                 null,
-                LocalDate.of(2025, 8,24)
+                LocalDate.now().plusDays(1)
         );
         ValidationException e = Assertions.assertThrows(ValidationException.class, () -> UserController.validateUser(user), "Исключение не пробросилось");
         Assertions.assertEquals("Дата рождения не может быть в будущем", e.getMessage());
     }
 
     @Test
-    void isValidateForBirthday2208() {
+    void isValidateForBirthdayNow() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
         User user = new User(
@@ -101,7 +101,7 @@ public class UserControllerTest {
                 "null@ya.ru",
                 "login",
                 null,
-                LocalDate.of(2025, 8,22)
+                LocalDate.now()
         );
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertTrue(violations.isEmpty(), "Дата рождения не может быть в будущем");
