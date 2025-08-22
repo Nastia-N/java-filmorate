@@ -3,9 +3,9 @@ package ru.yandex.practicum.filmorate.controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.NewUser;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -26,20 +26,16 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody @Valid User user) {
+    public User createUser(@RequestBody @Valid NewUser user) {
         validateUser(user);
-        user.setId(getNextId());
-        user.setName(getUserName(user));
-        users.put(user.getId(), user);
-        log.info("Пользователь с id {} создан", user.getId());
-        return user;
+        User u = new User(getNextId(), user.getEmail(), user.getLogin(), getUserName(user), user.getBirthday());
+        users.put(u.getId(), u);
+        log.info("Пользователь с id {} создан", u.getId());
+        return u;
     }
 
     @PutMapping
     public User updateUser(@RequestBody @Valid User newUser) {
-        if (newUser.getId() <= 0) {
-            throw new ConditionsNotMetException("Id должен быть указан");
-        }
         validateUser(newUser);
         if (users.containsKey(newUser.getId())) {
             newUser.setName(getUserName(newUser));
@@ -54,7 +50,7 @@ public class UserController {
         return nextId++;
     }
 
-    public static void validateUser(User user) {
+    public static void validateUser(NewUser user) {
         if (user.getLogin().contains(" ")) {
             throw new ValidationException("Логин не может содержать пробелы");
         }
@@ -63,7 +59,7 @@ public class UserController {
         }
     }
 
-    public static String getUserName(User user) {
+    public static String getUserName(NewUser user) {
         if (user.getName() == null || user.getName().isBlank()) {
             return user.getLogin();
         }

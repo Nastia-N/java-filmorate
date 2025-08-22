@@ -3,10 +3,10 @@ package ru.yandex.practicum.filmorate.controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.NewFilm;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -26,19 +26,16 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film createFilm(@RequestBody @Valid Film film) {
+    public Film createFilm(@RequestBody @Valid NewFilm film) {
         validateFilm(film);
-        film.setId(getNextId());
-        films.put(film.getId(), film);
-        log.info("Фильм с id {} создан", film.getId());
-        return film;
+        Film f = new Film(getNextId(), film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration());
+        films.put(f.getId(), f);
+        log.info("Фильм с id {} создан", f.getId());
+        return f;
     }
 
     @PutMapping
     public Film updateFilm(@RequestBody @Valid Film newFilm) {
-        if (newFilm.getId() <= 0) {
-            throw new ConditionsNotMetException("Id должен быть указан и больше 0");
-        }
         validateFilm(newFilm);
         if (films.containsKey(newFilm.getId())) {
             films.put(newFilm.getId(), newFilm);
@@ -52,7 +49,7 @@ public class FilmController {
         return nextId++;
     }
 
-    public static void validateFilm(Film film) {
+    public static void validateFilm(NewFilm film) {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
             throw new ValidationException("Дата релиза должна быть указана (начиная с 28 декабря 1895 года)");
         }
