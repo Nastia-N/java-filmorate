@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -75,7 +76,7 @@ public class UserControllerTest {
                 null,
                 LocalDate.of(2006, 1,1)
         );
-        ValidationException e = Assertions.assertThrows(ValidationException.class, () -> UserController.validateUser(user), "Исключение не пробросилось");
+        ValidationException e = Assertions.assertThrows(ValidationException.class, () -> InMemoryUserStorage.validateUser(user), "Исключение не пробросилось");
         Assertions.assertEquals("Логин не может содержать пробелы", e.getMessage());
     }
 
@@ -88,7 +89,7 @@ public class UserControllerTest {
                 null,
                 LocalDate.now().plusDays(1)
         );
-        ValidationException e = Assertions.assertThrows(ValidationException.class, () -> UserController.validateUser(user), "Исключение не пробросилось");
+        ValidationException e = Assertions.assertThrows(ValidationException.class, () -> InMemoryUserStorage.validateUser(user), "Исключение не пробросилось");
         Assertions.assertEquals("Дата рождения не может быть в будущем", e.getMessage());
     }
 
