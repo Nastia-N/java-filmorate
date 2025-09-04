@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -120,7 +121,7 @@ public class FilmControllerTest {
                 LocalDate.of(1895, 12, 27),
                 112
         );
-        ValidationException e = Assertions.assertThrows(ValidationException.class, () -> FilmController.validateFilm(film), "Исключение не пробросилось");
+        ValidationException e = Assertions.assertThrows(ValidationException.class, () -> InMemoryFilmStorage.validateFilm(film), "Исключение не пробросилось");
         Assertions.assertEquals("Дата релиза должна быть указана (начиная с 28 декабря 1895 года)", e.getMessage());
     }
 
