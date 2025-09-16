@@ -4,10 +4,10 @@
 
 # Запросы
 
-- Получение всех пользователей
-SELECT *
-FROM users 
-ORDER BY id;
+- Получение всех пользователей ⋅⋅
+SELECT *⋅⋅
+FROM users⋅⋅
+ORDER BY id;⋅⋅
 
 - Получие пользователя по id
 SELECT *
