@@ -16,8 +16,8 @@ public class Film extends NewFilm {
     private long id;
     private Set<Long> likes = new HashSet<>();
 
-    public Film(long id, String name, String description, LocalDate releaseDate, int duration) {
-        super(name, description, releaseDate, duration);
+    public Film(long id, String name, String description, LocalDate releaseDate, int duration, Set<Genre> genre, MPA rating) {
+        super(name, description, releaseDate, duration, genre, rating);
         this.id = id;
     }
 
