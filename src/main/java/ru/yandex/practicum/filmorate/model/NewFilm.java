@@ -35,6 +35,5 @@ public class NewFilm {
     private Set<Genre> genre;
 
     @NotNull(message = "Рейтинг не может быть null")
-    @NotBlank(message = "Рейтинг не может быть пустым")
     private MPA rating;
 }
