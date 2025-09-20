@@ -58,3 +58,4 @@ JOIN friendship f2 ON u.id = f2.friend_id
 JOIN status s2 ON f2.status = s2.status_id  
 WHERE f1.user_id = 1 AND f2.user_id = 2   
   AND s1.name = 'CONFIRMED' AND s2.name = 'CONFIRMED';
+  
