@@ -24,9 +24,9 @@ SELECT f.id, f.name, f.description, f.releasedate, f.duration,
        m.name AS mpa_name,  
        g.name AS genre_name  
 FROM films AS f  
-LEFT JOIN mpa ON f.id = mpa.film_id  
-LEFT JOIN film_genre fg ON f.id = fg.film_id  
-LEFT JOIN genre g ON fg.genre_id = g.genre_id  
+LEFT JOIN mpa_ratings ON f.id = mpa.film_id  
+LEFT JOIN film_genres fg ON f.id = fg.film_id  
+LEFT JOIN genres g ON fg.genre_id = g.id  
 GROUP BY f.id  
 ORDER BY f.id;
 ```  
@@ -67,10 +67,10 @@ LIMIT 10;
 ```sql
 SELECT u.*   
 FROM users AS u  
-JOIN friendship f1 ON u.id = f1.friend_id  
-JOIN status s1 ON f1.status = s1.status_id  
-JOIN friendship f2 ON u.id = f2.friend_id  
-JOIN status s2 ON f2.status = s2.status_id  
+JOIN friendships f1 ON u.id = f1.friend_id  
+JOIN statuses s1 ON f1.status = s1.id  
+JOIN friendships f2 ON u.id = f2.friend_id  
+JOIN statuses s2 ON f2.status = s2.id  
 WHERE f1.user_id = 1 AND f2.user_id = 2   
   AND s1.name = 'CONFIRMED' AND s2.name = 'CONFIRMED';
 ```
