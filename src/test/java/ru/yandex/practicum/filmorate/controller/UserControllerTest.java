@@ -23,7 +23,7 @@ public class UserControllerTest {
     private Validator validator;
 
     @Test
-    void isValidateForForCorrectUser() {
+    void isValidateForCorrectUser() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
         User user = new User(
