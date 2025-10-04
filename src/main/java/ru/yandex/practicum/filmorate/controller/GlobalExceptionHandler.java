@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,22 +15,22 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFoundException(NotFoundException e) {
+    @ExceptionHandler({NotFoundException.class, DataIntegrityViolationException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND) // 404
+    public ErrorResponse handleNotFoundException(Exception e) {
         log.info("Error", e);
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 500
     public ErrorResponse handleGeneralException(Exception e) {
         log.info("Error", e);
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler(value = {ValidationException.class, MethodArgumentNotValidException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = {ValidationException.class, MethodArgumentNotValidException.class, DuplicateKeyException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST) // 400
     public ErrorResponse handleMethodArgumentNotValid(Exception e) {
         log.info("Error", e);
         return new ErrorResponse(e.getMessage());

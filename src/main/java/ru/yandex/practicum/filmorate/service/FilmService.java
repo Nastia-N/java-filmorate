@@ -2,34 +2,47 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.model.NewFilm;
+import ru.yandex.practicum.filmorate.repository.FilmRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
     @Autowired
-    private FilmStorage filmStorage;
+    private FilmRepository filmRepository;
     @Autowired
     private UserService userService;
 
-    public void addLike(Long userId, Long filmId) {
-        filmStorage.getFilmById(filmId).addLike(userId);
-        userService.addLikeToFilm(userId, filmId);
+    public Collection<Film> getAllFilms() {
+        return filmRepository.getAllFilms();
     }
 
-    public void removeLike(Long userId, Long filmId) {
-        filmStorage.getFilmById(filmId).removeLike(userId);
-        userService.removeLikeToFilm(userId, filmId);
+    public Film createFilm(NewFilm film) {
+        validateFilm(film);
+        return filmRepository.createFilm(film);
+    }
+
+    public Film updateFilm(Film newFilm) {
+        validateFilm(newFilm);
+        return filmRepository.updateFilm(newFilm);
+    }
+
+    public Film getFilmById(Long id) {
+        return filmRepository.getFilmWithGenres(id);
     }
 
     public List<Film> getPopularFilms(int count) {
-        List<Film> films = new ArrayList<>(filmStorage.getAllFilms());
-        films.sort(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed());
-        return films.stream().limit(count).collect(Collectors.toList());
+        return filmRepository.getPopularFilms(count);
+    }
+
+    public static void validateFilm(NewFilm film) {
+        if (film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
+            throw new ValidationException("Дата релиза должна быть указана (начиная с 28 декабря 1895 года)");
+        }
     }
 }

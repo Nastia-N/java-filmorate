@@ -24,7 +24,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     public Film createFilm(NewFilm film) {
         validateFilm(film);
-        Film f = new Film(getNextId(), film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getGenre(), film.getRating());
+        Film f = new Film(getNextId(), film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getGenres(), film.getMpa().getId());
         films.put(f.getId(), f);
         log.info("Фильм с id {} создан", f.getId());
         return f;

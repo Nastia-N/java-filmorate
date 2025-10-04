@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.MPA;
+import ru.yandex.practicum.filmorate.model.FilmGenre;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,8 +34,8 @@ public class FilmControllerTest {
                 "Неукротимый в своем желании всегда и во всем побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял.",
                 LocalDate.of(2006, 12, 28),
                 112,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertTrue(violations.isEmpty(), "Не должно быть нарушений для валидного фильма");
@@ -51,8 +51,8 @@ public class FilmControllerTest {
                 "Неукротимый в своем желании всегда и во всем побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял.",
                 LocalDate.of(2006, 12, 28),
                 112,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size(), "Название фильма не может быть пустым");
@@ -68,8 +68,8 @@ public class FilmControllerTest {
                 "Неукротимый в своем желании всегда и во всем побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял.",
                 LocalDate.of(2006, 12, 28),
                 0,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size(), "Продолжительность фильма не может быть 0");
@@ -85,8 +85,8 @@ public class FilmControllerTest {
                 "Неукротимый в своем желании всегда и во всем побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял.",
                 LocalDate.of(2006, 12, 28),
                 -1,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size(), "Продолжительность фильма не может быть отрицательной");
@@ -102,8 +102,8 @@ public class FilmControllerTest {
                 "Неукротимый в своём желании всегда и во всём побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял. С помощью команды друзей он стал чемпионом, но понял, что для негооо не это главное.",
                 LocalDate.of(2006, 12, 28),
                 112,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size(), "Длина описания не должна превышать 200 символов");
@@ -119,8 +119,8 @@ public class FilmControllerTest {
                 "Неукротимый в своём желании всегда и во всём побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял. С помощью команды друзей он стал чемпионом, но понял, что для негоо не это главное.",
                 LocalDate.of(2006, 12, 28),
                 112,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertTrue(violations.isEmpty(), "Не должно быть нарушений для валидного фильма");
@@ -134,8 +134,8 @@ public class FilmControllerTest {
                 "Неукротимый в своем желании всегда и во всем побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял.",
                 LocalDate.of(1895, 12, 27),
                 112,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         ValidationException e = Assertions.assertThrows(ValidationException.class, () -> InMemoryFilmStorage.validateFilm(film), "Исключение не пробросилось");
         Assertions.assertEquals("Дата релиза должна быть указана (начиная с 28 декабря 1895 года)", e.getMessage());
@@ -151,8 +151,8 @@ public class FilmControllerTest {
                 "Неукротимый в своем желании всегда и во всем побеждать гоночный автомобиль «Молния» Маккуин сбился с пути и застрял.",
                 LocalDate.of(1895, 12, 28),
                 112,
-                Set.of(Genre.CARTOON),
-                MPA.G
+                List.of(new FilmGenre(3, "Мультфильм")),
+                1
         );
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertTrue(violations.isEmpty(), "Не должно быть нарушений для валидного фильма");

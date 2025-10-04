@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,9 +31,7 @@ public class NewFilm {
     @Min(1)
     private int duration;
 
-    @NotEmpty(message = "Жанр не может быть пустым")
-    private Set<Genre> genre;
+    private List<FilmGenre> genres = new ArrayList<>();
 
-    @NotNull(message = "Рейтинг не может быть null")
-    private MPA rating;
+    private MpaRating mpa;
 }
