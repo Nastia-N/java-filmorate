@@ -25,33 +25,31 @@ public class JdbcFriendshipRepositoryTest {
 
     @Test
     void isValidateAddFriend() {
-        User user = new User(
-                1,
-                "null@ya.ru",
-                "login",
-                "name",
-                LocalDate.of(1995, 8, 22)
-        );
-        userRepository.createUser(user);
+        User user = new User();
+        user.setEmail("user@mail.ru");
+        user.setLogin("user");
+        user.setName("User");
+        user.setBirthday(LocalDate.of(1990, 1, 1));
+        User createdUser = userRepository.createUser(user);
 
-        User user1 = new User(
-                2,
-                "null1@ya.ru",
-                "login1",
-                "name1",
-                LocalDate.of(1992, 8, 22)
-        );
-        userRepository.createUser(user1);
-        friendshipRepository.addFriend(user.getId(), user1.getId());
+        User user1 = new User();
+        user1.setEmail("user1@mail.ru");
+        user1.setLogin("user1");
+        user1.setName("User One");
+        user1.setBirthday(LocalDate.of(1992, 1, 1));
+        User createdUser1 = userRepository.createUser(user1);
+
+        friendshipRepository.addFriend(createdUser.getId(), createdUser1.getId());
 
         Integer friendshipCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM friendships WHERE user_id = ? AND friend_id = ?",
-                Integer.class, user.getId(), user1.getId());
+                Integer.class, createdUser.getId(), createdUser1.getId());
 
         assertThat(friendshipCount).isEqualTo(1);
+
         String status = jdbcTemplate.queryForObject(
                 "SELECT status FROM friendships WHERE user_id = ? AND friend_id = ?",
-                String.class, user.getId(), user1.getId());
+                String.class, createdUser.getId(), createdUser1.getId());
         assertThat(status).isEqualTo("SENDING");
     }
 

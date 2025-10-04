@@ -46,27 +46,36 @@ public class JdbcUserRepositoryTest {
 
     @Test
     void isValidateCreatedUser() {
-        User user = new User(
-                1,
-                "null@ya.ru",
-                "login",
-                "name",
-                LocalDate.of(1995, 8, 22)
-        );
-        assertEquals(userRepository.createUser(user), user, "Пользователь не совпадает.");
+        User user = new User();
+        user.setEmail("null@ya.ru");
+        user.setLogin("login");
+        user.setName("name");
+        user.setBirthday(LocalDate.of(1995, 8, 22));
+
+        User createdUser = userRepository.createUser(user);
+        assertThat(createdUser.getId()).isNotNull();
+        assertThat(createdUser.getEmail()).isEqualTo("null@ya.ru");
+        assertThat(createdUser.getLogin()).isEqualTo("login");
+        assertThat(createdUser.getName()).isEqualTo("name");
+        assertThat(createdUser.getBirthday()).isEqualTo(LocalDate.of(1995, 8, 22));
     }
 
     @Test
     void isValidateGetUserById() {
-        User user = new User(
-                1,
-                "null@ya.ru",
-                "login",
-                "name",
-                LocalDate.of(1995, 8, 22)
-        );
-        userRepository.createUser(user);
-        assertEquals(userRepository.getUserById(user.getId()), user, "Пользователь не совпадает.");
+        User user = new User();
+        user.setEmail("user@mail.ru");
+        user.setLogin("user");
+        user.setName("User");
+        user.setBirthday(LocalDate.of(1990, 1, 1));
+
+        User createdUser = userRepository.createUser(user);
+        User foundUser = userRepository.getUserById(createdUser.getId());
+
+        assertThat(foundUser.getId()).isEqualTo(createdUser.getId());
+        assertThat(foundUser.getEmail()).isEqualTo("user@mail.ru");
+        assertThat(foundUser.getLogin()).isEqualTo("user");
+        assertThat(foundUser.getName()).isEqualTo("User");
+        assertThat(foundUser.getBirthday()).isEqualTo(LocalDate.of(1990, 1, 1));
     }
 
     @Test
