@@ -55,33 +55,31 @@ public class JdbcFriendshipRepositoryTest {
 
     @Test
     void isValidateRemoveFriend() {
-        User user = new User(
-                1,
-                "null@ya.ru",
-                "login",
-                "name",
-                LocalDate.of(1995, 8, 22)
-        );
-        userRepository.createUser(user);
+        // Создаем первого пользователя
+        User user = new User();
+        user.setEmail("null@ya.ru");
+        user.setLogin("login");
+        user.setName("name");
+        user.setBirthday(LocalDate.of(1995, 8, 22));
+        User createdUser = userRepository.createUser(user);
 
-        User user1 = new User(
-                1,
-                "null1@ya.ru",
-                "login1",
-                "name1",
-                LocalDate.of(1992, 8, 22)
-        );
-        userRepository.createUser(user1);
+        // Создаем второго пользователя с другим email и login
+        User user1 = new User();
+        user1.setEmail("null1@ya.ru");
+        user1.setLogin("login1");
+        user1.setName("name1");
+        user1.setBirthday(LocalDate.of(1992, 8, 22));
+        User createdUser1 = userRepository.createUser(user1);
 
-        friendshipRepository.addFriend(user.getId(), user1.getId());
+        friendshipRepository.addFriend(createdUser.getId(), createdUser1.getId());
         Integer friendshipCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM friendships WHERE user_id = ? AND friend_id = ?",
-                Integer.class, user.getId(), user1.getId());
+                Integer.class, createdUser.getId(), createdUser1.getId());
         assertThat(friendshipCount).isEqualTo(1);
-        friendshipRepository.removeFriend(user.getId(), user1.getId());
+        friendshipRepository.removeFriend(createdUser.getId(), createdUser1.getId());
         Integer friendshipCountNew = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM friendships WHERE user_id = ? AND friend_id = ?",
-                Integer.class, user.getId(), user1.getId());
+                Integer.class, createdUser.getId(), createdUser1.getId());
         assertThat(friendshipCountNew).isEqualTo(0);
     }
 }
