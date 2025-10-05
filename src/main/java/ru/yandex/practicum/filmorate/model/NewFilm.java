@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,4 +30,8 @@ public class NewFilm {
 
     @Min(1)
     private int duration;
+
+    private List<FilmGenre> genres = new ArrayList<>();
+
+    private MpaRating mpa;
 }

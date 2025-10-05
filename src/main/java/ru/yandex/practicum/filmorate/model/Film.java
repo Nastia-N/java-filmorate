@@ -3,12 +3,14 @@ package ru.yandex.practicum.filmorate.model;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Film extends NewFilm {
@@ -16,24 +18,8 @@ public class Film extends NewFilm {
     private long id;
     private Set<Long> likes = new HashSet<>();
 
-    public Film(long id, String name, String description, LocalDate releaseDate, int duration) {
-        super(name, description, releaseDate, duration);
+    public Film(long id, String name, String description, LocalDate releaseDate, int duration, List<FilmGenre> genre, int rating) {
+        super(name, description, releaseDate, duration, genre, new MpaRating(rating, null));
         this.id = id;
-    }
-
-    public void addLike(Long userId) {
-        if (userId != null && userId > 0) {
-            likes.add(userId);
-        } else {
-            throw new ValidationException("Id должен быть положительным числом");
-        }
-    }
-
-    public void removeLike(Long userId) {
-        if (userId != null && userId > 0) {
-            likes.remove(userId);
-        } else {
-            throw new ValidationException("Id должен быть положительным числом");
-        }
     }
 }
