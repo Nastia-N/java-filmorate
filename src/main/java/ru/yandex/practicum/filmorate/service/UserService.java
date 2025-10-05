@@ -72,22 +72,4 @@ public class UserService {
         copy.retainAll(u2);
         return copy;
     }
-
-    public void addLikeToFilm(Long userId, Long filmId) {
-        userRepository.getUserById(userId).addLikeToFilm(filmId);
-    }
-
-    public void removeLikeToFilm(Long userId, Long filmId) {
-        userRepository.getUserById(userId).removeLikeToFilm(filmId);
-    }
-
-    public void addFriendRequest(Long userId, Long friendId) {
-        userRepository.getUserById(userId).sendFriendRequest(friendId);
-        userRepository.getUserById(friendId).waitFriendRequest(userId);
-    }
-
-    public void confirmFriend(Long userId, Long friendId) {
-        userRepository.getUserById(userId).confirmFriend(friendId);
-        userRepository.getUserById(friendId).updateFriend(userId);
-    }
 }

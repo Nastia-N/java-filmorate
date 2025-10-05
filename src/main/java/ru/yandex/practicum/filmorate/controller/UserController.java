@@ -52,9 +52,4 @@ public class UserController {
     public Collection<User> getCommonFriends(@PathVariable long userId, @PathVariable long otherId) {
         return userService.getCommonFriends(userId, otherId);
     }
-
-    //@PutMapping("/{id}/friends/{friendId}/confirm")
-    //public void addFriendConfirm(@PathVariable long id, @PathVariable long friendId) {
-    //    userService.confirmFriend(id, friendId);
-    //}
 }
