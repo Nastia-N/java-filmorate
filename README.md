@@ -1,78 +1,63 @@
 # java-filmorate
+Социальная сеть для любителей кино.  
+Позволяет пользователям делиться своими впечатлениями о фильмах, ставить оценки, добавлять друзей и находить общие интересы в сфере кино.
+
+Схема базы данных
 ![Схема базы данных](https://github.com/Nastia-N/java-filmorate/blob/main/Filmorate.png)
 
+## Возможности
+##### Пользователи
+Регистрация и профиль пользователя  
+Система друзей с подтверждением запросов   
+Поиск общих друзей  
+История лайков фильмов
 
-# Запросы
+##### Фильмы
+Добавление фильмов с описанием  
+Система рейтингов MPA (G, PG, PG-13, R, NC-17)  
+Категории по жанрам  
+Возможность ставить лайки фильмам  
+Рейтинг популярности фильмов (по количеству лайков)  
+Поиск общих фильмов с друзьями
 
-### Получение всех пользователей 
-```sql 
-SELECT *  
-FROM users  
-ORDER BY id;
-```  
+## Технологический стек
+Java 21 с использованием Spring Boot 3  
+Spring Web MVC для REST API  
+Spring JDBC для работы с базой данных  
+H2 Database  
+Lombok, Jakarta Validation
 
-### Получие пользователя по id  
-```sql
-SELECT *  
-FROM users  
-WHERE id = 1;
-```  
+## Архитектура
+Многослойная архитектура (Controller-Service-Repository)  
+REST API с JSON  
+SQL миграции через schema.sql и data.sql  
+Кастомные исключения и глобальный обработчик ошибок
 
-### Получение всех фильмов с жанрами и MPA  
-```sql
-SELECT f.id, f.name, f.description, f.releasedate, f.duration,  
-       m.name AS mpa_name,  
-       g.name AS genre_name  
-FROM films AS f  
-LEFT JOIN mpa_ratings ON f.id = mpa.film_id  
-LEFT JOIN film_genres fg ON f.id = fg.film_id  
-LEFT JOIN genres g ON fg.genre_id = g.id  
-GROUP BY f.id  
-ORDER BY f.id;
-```  
+## Основные эндпоинты
+##### Пользователи (Users):
+GET    /users                         - получить всех пользователей
+GET    /users/{id}                    - получить пользователя по ID
+POST   /users                         - создать нового пользователя
+PUT    /users                         - обновить пользователя
+PUT    /users/{userId}/friends/{friendId} - добавить друга
+DELETE /users/{userId}/friends/{friendId} - удалить друга
+GET    /users/{userId}/friends        - получить друзей пользователя
+GET    /users/{userId}/friends/common/{otherId} - получить общих друзей
 
-### Получие фильма по id  
-```sql
-SELECT *  
-FROM films  
-WHERE id = 1;
-```  
+##### Фильмы (Films):
+GET    /films                         - получить все фильмы
+GET    /films/{id}                    - получить фильм по ID
+POST   /films                         - создать новый фильм
+PUT    /films                         - обновить фильм
+PUT    /films/{filmId}/like/{userId}  - поставить лайк фильму
+DELETE /films/{filmId}/like/{userId}  - удалить лайк
+GET    /films/popular                 - получить популярные фильмы
+GET    /films/common                  - получить общие фильмы с другом
 
-### Получение лайков конкретного пользователя  
-```sql
-SELECT f.name AS film_name  
-FROM films AS f  
-JOIN likes l ON f.id = l.film_id  
-WHERE l.user_id = 1;
-```  
+##### Жанры (Genres):
+GET /genres          - получить все жанры
+GET /genres/{id}     - получить жанр по ID
 
-### Получение лайков конкретного фильма  
-```sql
-SELECT COUNT(l)  
-FROM films AS f  
-JOIN likes l ON f.id = l.film_id  
-WHERE f.id = 1;
-```  
-
-### Получение топ-10 популярных фильмов  
-```sql
-SELECT f.name AS film_name, COUNT(l) AS like_count  
-FROM films AS f  
-JOIN likes l ON f.id = l.film_id  
-ORDER BY like_count DESC, film_name  
-LIMIT 10;
-```  
-
-### Получение списка общих друзей  
-```sql
-SELECT u.*   
-FROM users AS u  
-JOIN friendships f1 ON u.id = f1.friend_id  
-JOIN statuses s1 ON f1.status = s1.id  
-JOIN friendships f2 ON u.id = f2.friend_id  
-JOIN statuses s2 ON f2.status = s2.id  
-WHERE f1.user_id = 1 AND f2.user_id = 2   
-  AND s1.name = 'CONFIRMED' AND s2.name = 'CONFIRMED';
-```
-
-
+##### Рейтинги MPA:
+GET /mpa             - получить все рейтинги MPA
+GET /mpa/{id}        - получить рейтинг MPA по ID
