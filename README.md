@@ -34,7 +34,7 @@ SQL миграции через schema.sql и data.sql
 Кастомные исключения и глобальный обработчик ошибок
 
 ## Основные эндпоинты
-##### Пользователи (Users):
+##### Пользователи (/users):
 GET    /users                         - получить всех пользователей  
 GET    /users/{id}                    - получить пользователя по ID  
 POST   /users                         - создать нового пользователя  
@@ -44,7 +44,7 @@ DELETE /users/{userId}/friends/{friendId} - удалить друга
 GET    /users/{userId}/friends        - получить друзей пользователя  
 GET    /users/{userId}/friends/common/{otherId} - получить общих друзей
 
-##### Фильмы (Films):
+##### Фильмы (/films ):
 GET    /films                         - получить все фильмы  
 GET    /films/{id}                    - получить фильм по ID  
 POST   /films                         - создать новый фильм  
@@ -54,10 +54,10 @@ DELETE /films/{filmId}/like/{userId}  - удалить лайк
 GET    /films/popular                 - получить популярные фильмы  
 GET    /films/common                  - получить общие фильмы с другом
 
-##### Жанры (Genres):
+##### Жанры (/genres):
 GET /genres          - получить все жанры  
 GET /genres/{id}     - получить жанр по ID
 
-##### Рейтинги MPA:
+##### Рейтинги MPA (/mpa):
 GET /mpa             - получить все рейтинги MPA  
 GET /mpa/{id}        - получить рейтинг MPA по ID
