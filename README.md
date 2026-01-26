@@ -35,29 +35,29 @@ SQL миграции через schema.sql и data.sql
 
 ## Основные эндпоинты
 ##### Пользователи (Users):
-GET    /users                         - получить всех пользователей
-GET    /users/{id}                    - получить пользователя по ID
-POST   /users                         - создать нового пользователя
-PUT    /users                         - обновить пользователя
-PUT    /users/{userId}/friends/{friendId} - добавить друга
-DELETE /users/{userId}/friends/{friendId} - удалить друга
-GET    /users/{userId}/friends        - получить друзей пользователя
+GET    /users                         - получить всех пользователей  
+GET    /users/{id}                    - получить пользователя по ID  
+POST   /users                         - создать нового пользователя  
+PUT    /users                         - обновить пользователя  
+PUT    /users/{userId}/friends/{friendId} - добавить друга  
+DELETE /users/{userId}/friends/{friendId} - удалить друга  
+GET    /users/{userId}/friends        - получить друзей пользователя  
 GET    /users/{userId}/friends/common/{otherId} - получить общих друзей
 
 ##### Фильмы (Films):
-GET    /films                         - получить все фильмы
-GET    /films/{id}                    - получить фильм по ID
-POST   /films                         - создать новый фильм
-PUT    /films                         - обновить фильм
-PUT    /films/{filmId}/like/{userId}  - поставить лайк фильму
-DELETE /films/{filmId}/like/{userId}  - удалить лайк
-GET    /films/popular                 - получить популярные фильмы
+GET    /films                         - получить все фильмы  
+GET    /films/{id}                    - получить фильм по ID  
+POST   /films                         - создать новый фильм  
+PUT    /films                         - обновить фильм  
+PUT    /films/{filmId}/like/{userId}  - поставить лайк фильму  
+DELETE /films/{filmId}/like/{userId}  - удалить лайк  
+GET    /films/popular                 - получить популярные фильмы  
 GET    /films/common                  - получить общие фильмы с другом
 
 ##### Жанры (Genres):
-GET /genres          - получить все жанры
+GET /genres          - получить все жанры  
 GET /genres/{id}     - получить жанр по ID
 
 ##### Рейтинги MPA:
-GET /mpa             - получить все рейтинги MPA
+GET /mpa             - получить все рейтинги MPA  
 GET /mpa/{id}        - получить рейтинг MPA по ID
